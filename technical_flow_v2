@@ -1,0 +1,286 @@
+# Technical Flow V2 — Local Service Quote & Visit Assistant
+
+## Objetivo
+Definir la estructura técnica del flujo del Proyecto 3 para poder pasar de la lógica documental a una versión ejecutable y medible.
+
+La prioridad de esta V2 es:
+- probar bien la lógica
+- separar claramente interpretación y reglas de negocio
+- preparar una salida técnica y una salida operativa
+
+---
+
+## 1. Modos del sistema
+
+### Modo evaluación
+Usa un dataset de prueba para validar:
+- tipo_servicio
+- tipo_necesidad
+- prioridad
+- score_oportunidad
+- datos_faltantes
+- requiere_visita
+- requiere_fotos
+- zona_confirmada
+- auto_reply_allowed
+- reply_type
+
+### Modo real
+Usa una entrada real por webhook para:
+- recibir una consulta
+- normalizarla
+- analizarla con IA
+- corregir salida
+- y guardarla en hojas operativas
+
+---
+
+## 2. Estructura general del flujo
+
+### Flujo de evaluación
+Manual Trigger
+→ dataset_test_v2
+→ Add Run Metadata
+→ OpenAI Analysis
+→ Parse OpenAI
+→ Merge Original + AI
+→ Business Corrections
+→ Prepare for Sheets
+→ Evaluate Output
+→ Save Technical Results
+
+### Flujo real
+Incoming Webhook
+→ Normalize Incoming Inquiry
+→ Add Run Metadata
+→ OpenAI Analysis
+→ Parse OpenAI
+→ Merge Original + AI
+→ Business Corrections
+→ Prepare for Sheets
+→ Save Technical Results
+→ Prepare Client View
+→ Save Client View
+
+---
+
+## 3. Función de cada nodo
+
+### Manual Trigger
+Permite lanzar pruebas controladas con el dataset.
+
+### dataset_test_v2
+Devuelve casos de prueba estructurados como items para validar el sistema.
+
+### Incoming Webhook
+Recibe una consulta real desde formulario, email conectado o integración externa.
+
+### Normalize Incoming Inquiry
+Estandariza la entrada en una estructura consistente.
+
+### Add Run Metadata
+Añade:
+- run_id
+- fecha_ejecucion
+- fuente
+- modelo_usado
+- version_prompt
+
+### OpenAI Analysis
+Envía el caso al modelo con el prompt V2 y recibe JSON estructurado.
+
+### Parse OpenAI
+Limpia, valida y normaliza la salida del modelo.
+
+### Merge Original + AI
+Une:
+- datos originales del caso
+- salida parseada del modelo
+
+### Business Corrections
+Aplica reglas finales de negocio:
+- quitar faltantes ya presentes
+- reforzar urgencia
+- reforzar soporte
+- ajustar auto_reply_allowed
+- generar send_status
+- generar fecha_followup
+- preparar defaults internos
+
+### Prepare for Sheets
+Convierte arrays y campos técnicos para guardado en hoja técnica.
+
+### Evaluate Output
+Compara expected vs real en modo evaluación.
+
+### Save Technical Results
+Guarda la salida técnica completa.
+
+### Prepare Client View
+Convierte la salida técnica en una vista simplificada y comprensible para negocio.
+
+### Save Client View
+Guarda la vista operativa del cliente.
+
+---
+
+## 4. Estructura mínima del item de entrada
+
+### En evaluación
+Cada item debe incluir:
+- id
+- nombre
+- email
+- telefono
+- municipio
+- mensaje
+- tipo_servicio_esperado
+- tipo_necesidad_esperada
+- prioridad_esperada
+- score_esperado
+- datos_faltantes_esperados
+- requiere_visita_esperado
+- requiere_fotos_esperado
+- zona_confirmada_esperado
+- auto_reply_allowed_esperado
+- reply_type_esperado
+
+### En modo real
+Cada item debe incluir al menos:
+- id
+- nombre
+- email o telefono
+- municipio si existe
+- mensaje
+- fuente
+
+---
+
+## 5. Hoja técnica esperada
+
+### Nombre sugerido
+results_local_services_ai
+
+### Debe contener
+- run_id
+- fecha_ejecucion
+- fuente
+- modelo_usado
+- version_prompt
+- id
+- nombre
+- email
+- telefono
+- municipio
+- mensaje
+- tipo_servicio
+- tipo_necesidad
+- prioridad
+- score_oportunidad
+- datos_faltantes_text
+- resumen
+- siguiente_accion
+- requiere_visita
+- requiere_fotos
+- zona_confirmada
+- respuesta_lista_para_enviar
+- auto_reply_allowed
+- reply_type
+- send_status
+- estado
+- human_review_required
+- fecha_followup
+- responsable
+- respondido
+- resultado_final
+- notas
+
+---
+
+## 6. Hoja operativa de cliente esperada
+
+### Nombre sugerido
+local_services_operativa
+
+### Debe contener
+- fecha_entrada
+- nombre
+- email
+- telefono
+- municipio
+- mensaje
+- tipo_servicio
+- tipo_necesidad
+- prioridad
+- que_falta
+- requiere_visita
+- requiere_fotos
+- zona_confirmada
+- respuesta_sugerida
+- se_puede_enviar
+- estado
+- fecha_seguimiento
+- responsable
+- respondido
+- resultado_final
+- notas
+
+---
+
+## 7. Principios de implementación
+
+### Principio 1
+Separar interpretación de negocio.
+El modelo propone; las reglas finales corrigen.
+
+### Principio 2
+Separar vista técnica de vista cliente.
+No enseñar al cliente campos internos innecesarios.
+
+### Principio 3
+Ser conservador en lo sensible.
+Si hay duda, revisión humana.
+
+### Principio 4
+No mezclar evaluación con producción.
+Cada modo tiene su propio flujo.
+
+---
+
+## 8. Qué debe validarse primero
+
+Antes de pasar a webhook real, debe validarse en dataset:
+
+- si clasifica bien tipo_servicio
+- si clasifica bien tipo_necesidad
+- si pide los datos correctos
+- si marca bien requiere_visita
+- si marca bien requiere_fotos
+- si no se equivoca con cobertura o desplazamiento
+- si auto_reply_allowed solo se activa en casos seguros
+
+---
+
+## 9. Qué no hace falta implementar todavía
+
+En esta fase no hace falta:
+- agenda real
+- CRM
+- cálculo real de precios
+- integración automática con WhatsApp
+- envío automático final al cliente
+- múltiples negocios a la vez
+
+La prioridad es construir una V2 sólida y vendible, no una infraestructura compleja.
+
+---
+
+## 10. Resultado esperado del flujo
+
+El sistema debe ser capaz de convertir una consulta local desordenada en:
+- un caso entendido
+- con servicio y necesidad detectados
+- con datos faltantes señalados
+- con propuesta de siguiente paso
+- con respuesta segura
+- y con seguimiento claro
