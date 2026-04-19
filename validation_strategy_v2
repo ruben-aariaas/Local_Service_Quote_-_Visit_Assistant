@@ -1,0 +1,218 @@
+# Validation Strategy V2 — Local Service Quote & Visit Assistant
+
+## Objetivo
+Definir cómo se validará la calidad del sistema antes de usarlo con consultas reales.
+
+La prioridad no es conseguir una perfección artificial.
+La prioridad es comprobar que:
+- entiende bien el tipo de servicio
+- entiende bien la necesidad principal
+- pide datos razonables
+- no se pasa en respuestas sensibles
+- y deja un siguiente paso útil
+
+---
+
+## 1. Qué se va a evaluar
+
+### Campos principales
+- tipo_servicio
+- tipo_necesidad
+- prioridad
+- score_oportunidad
+- datos_faltantes
+- requiere_visita
+- requiere_fotos
+- zona_confirmada
+- auto_reply_allowed
+- reply_type
+
+### Campos secundarios
+- siguiente_accion
+- estado
+- respuesta_lista_para_enviar
+- human_review_required
+
+---
+
+## 2. Qué significa un buen resultado
+
+Un buen resultado no es que el sistema “responda mucho”.
+Un buen resultado es que:
+
+- clasifique bien el servicio
+- clasifique bien la necesidad
+- pida datos lógicos
+- no invente precio, plazo, cobertura o desplazamiento
+- escale correctamente lo sensible
+- automatice solo lo seguro
+
+---
+
+## 3. Criterios mínimos para considerar buena la fase de dataset
+
+### Muy importante
+- tipo_servicio: alto acierto
+- tipo_necesidad: alto acierto
+
+### Importante
+- datos_faltantes: razonables y útiles
+- requiere_visita: coherente con el caso
+- requiere_fotos: coherente con el caso
+- auto_reply_allowed: conservador y seguro
+- reply_type: alineado con la respuesta
+
+### Menos crítico al principio
+- score_oportunidad
+- prioridad
+
+Estos dos pueden requerir más ajuste fino y criterio de negocio.
+
+---
+
+## 4. Qué errores son aceptables al principio
+
+### Aceptables
+- una prioridad media en vez de alta
+- score medio en vez de alto
+- pedir un dato adicional razonable
+- dejar un caso en revisión humana aunque luego pudiera automatizarse
+
+### No aceptables
+- inventar precio
+- prometer plazo exacto
+- confirmar zona sin base
+- dar coste de desplazamiento inventado
+- tratar soporte como oportunidad comercial fuerte
+- dejar auto_reply_allowed = true en un caso sensible
+
+---
+
+## 5. Fallos esperables en la primera iteración
+
+### Fallo 1
+Confundir presupuesto con información general
+
+### Fallo 2
+No detectar bien cuándo hacen falta fotos
+
+### Fallo 3
+No detectar bien cuándo hace falta visita
+
+### Fallo 4
+Ser demasiado optimista con auto_reply_allowed
+
+### Fallo 5
+Pedir demasiados datos o pedir datos poco útiles
+
+### Fallo 6
+Confundir seguimiento con nueva oportunidad
+
+### Fallo 7
+Responder demasiado genérico en cobertura_zona o coste_desplazamiento
+
+---
+
+## 6. Estrategia de validación
+
+### Fase 1 — dataset de 12 casos
+Usar el dataset actual y comprobar:
+- expected vs real
+- patrones de error
+- campos que más fallan
+
+### Fase 2 — ajuste de prompt
+Corregir:
+- ambigüedad
+- reglas demasiado abiertas
+- huecos de negocio
+
+### Fase 3 — ajuste de parser
+Corregir:
+- enums
+- defaults
+- guardarraíles
+- normalización de datos_faltantes
+
+### Fase 4 — business corrections
+Aplicar reglas finales:
+- quitar faltantes ya conocidos
+- endurecer casos sensibles
+- fijar follow-up
+- preparar salida técnica y operativa
+
+### Fase 5 — mini batería real
+Probar 3 o 5 consultas simuladas por webhook antes de usar algo real
+
+---
+
+## 7. Métricas que conviene mirar
+
+### Métricas principales
+- acierto_tipo_servicio
+- acierto_tipo_necesidad
+- acierto_auto_reply_allowed
+- acierto_reply_type
+
+### Métricas secundarias
+- acierto_prioridad
+- acierto_score
+- acierto_requiere_visita
+- acierto_requiere_fotos
+- acierto_zona_confirmada
+- acierto_datos_faltantes
+
+### Métrica global
+- correcto_total
+
+---
+
+## 8. Umbral razonable para pasar a modo real
+
+No hace falta perfección.
+Hace falta seguridad y coherencia.
+
+### Señales de que ya puede pasar a webhook
+- tipo_servicio consistente
+- tipo_necesidad consistente
+- no inventa cosas sensibles
+- auto_reply_allowed prudente
+- reply_type lógico
+- datos_faltantes razonables
+- respuestas usables
+
+### Señales de que todavía no
+- inventa respuestas delicadas
+- automatiza casos que deberían revisarse
+- pide datos absurdos
+- confunde soporte con oportunidad
+- no distingue visita, plazo o cobertura
+
+---
+
+## 9. Regla práctica de paso a webhook
+
+Pasar a webhook cuando:
+- el sistema sea útil
+- el comportamiento sea seguro
+- y los errores restantes sean afinables sin riesgo
+
+No pasar a webhook solo porque “parece que ya funciona”.
+
+---
+
+## 10. Filosofía de validación
+
+En este proyecto vale más un sistema prudente que uno demasiado atrevido.
+
+Mejor:
+- pedir un dato más
+- o escalar a revisión
+que:
+- responder mal una cuestión sensible
+
+---
+
+## 11. Resultado esperado
+
+Una estrategia de validación clara para construir primero una base fiable y solo después pasar a flujo real con confianza.
