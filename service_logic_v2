@@ -1,0 +1,301 @@
+# Service Logic V2 — Local Service Quote & Visit Assistant
+
+## Objetivo
+Definir la taxonomía del sistema:
+- qué tipos de servicio reconoce
+- qué tipos de necesidad reconoce
+- qué datos mínimos necesita
+- y qué outputs debe generar
+
+La idea no es automatizar presupuestos cerrados, sino preparar bien el siguiente paso comercial.
+
+---
+
+## 1. Tipos de servicio
+
+### Valores iniciales permitidos
+- climatizacion
+- ventanas_cerramientos
+- reforma_bano
+- reforma_cocina
+- electricidad_fontaneria
+- reforma_general
+- otro_servicio_local
+
+### Significado
+- `climatizacion` → aire acondicionado, split, conductos, calefacción, mantenimiento
+- `ventanas_cerramientos` → ventanas, puertas, cerramientos, aluminio, PVC
+- `reforma_bano` → reforma parcial o integral de baño
+- `reforma_cocina` → reforma parcial o integral de cocina
+- `electricidad_fontaneria` → averías, instalaciones, cambios o mejoras
+- `reforma_general` → obras o reformas no acotadas a baño/cocina
+- `otro_servicio_local` → cualquier caso no encajado todavía
+
+---
+
+## 2. Tipos de necesidad
+
+### Valores iniciales permitidos
+- presupuesto
+- visita_tecnica
+- plazo
+- cobertura_zona
+- coste_desplazamiento
+- seguimiento
+- soporte_postventa
+- informacion_general
+- urgencia
+
+### Significado
+- `presupuesto` → quiere precio, orientación económica o valoración
+- `visita_tecnica` → quiere que vayan a verlo o revisar el trabajo in situ
+- `plazo` → pregunta cuánto tardarían o cuándo podrían hacerlo
+- `cobertura_zona` → pregunta si trabajáis en su zona
+- `coste_desplazamiento` → pregunta por visita, desplazamiento o kilometraje
+- `seguimiento` → retoma una consulta o presupuesto anterior
+- `soporte_postventa` → problema tras un trabajo ya realizado
+- `informacion_general` → duda abierta sin foco técnico claro
+- `urgencia` → necesidad inmediata o bloqueo operativo
+
+---
+
+## 3. Datos mínimos por tipo de servicio
+
+### climatizacion
+Datos recomendados:
+- municipio
+- tipo_trabajo
+- numero_unidades
+- instalacion_nueva_o_sustitucion
+- fotos
+- urgencia
+
+### ventanas_cerramientos
+Datos recomendados:
+- municipio
+- numero_elementos
+- medidas_aprox
+- tipo_material
+- fotos
+- urgencia
+
+### reforma_bano
+Datos recomendados:
+- municipio
+- tipo_reforma
+- reforma_parcial_o_integral
+- fotos
+- visita_deseada
+- urgencia
+
+### reforma_cocina
+Datos recomendados:
+- municipio
+- tipo_reforma
+- reforma_parcial_o_integral
+- fotos
+- visita_deseada
+- urgencia
+
+### electricidad_fontaneria
+Datos recomendados:
+- municipio
+- tipo_incidencia_o_trabajo
+- urgencia
+- fotos
+- visita_deseada
+
+### reforma_general
+Datos recomendados:
+- municipio
+- descripcion_trabajo
+- fotos
+- visita_deseada
+- urgencia
+
+### otro_servicio_local
+Datos recomendados:
+- municipio
+- descripcion_trabajo
+- fotos
+- urgencia
+
+---
+
+## 4. Datos faltantes permitidos
+
+### Valores iniciales permitidos
+- municipio
+- codigo_postal
+- tipo_trabajo
+- numero_unidades
+- medidas_aprox
+- fotos
+- urgencia
+- visita_deseada
+- instalacion_nueva_o_sustitucion
+- tipo_material
+- reforma_parcial_o_integral
+- descripcion_trabajo
+
+### Regla
+El sistema solo puede marcar como faltantes claves de campo, no frases libres.
+
+---
+
+## 5. Outputs principales del sistema
+
+### Campos base
+- tipo_servicio
+- tipo_necesidad
+- prioridad
+- score_oportunidad
+- datos_faltantes
+- resumen
+- siguiente_accion
+- estado
+- human_review_required
+
+### Campos operativos V2
+- requiere_visita
+- requiere_fotos
+- zona_confirmada
+- auto_reply_allowed
+- reply_type
+- respuesta_lista_para_enviar
+- fecha_followup
+
+---
+
+## 6. Significado de outputs específicos
+
+### requiere_visita
+boolean
+
+Indica si el caso necesita visita técnica antes de poder avanzar con criterio.
+
+### requiere_fotos
+boolean
+
+Indica si conviene pedir fotos antes de valorar o clasificar mejor el caso.
+
+### zona_confirmada
+Valores:
+- si
+- no
+- revisar
+
+Indica si el sistema puede considerar confirmada la cobertura geográfica.
+
+### auto_reply_allowed
+boolean
+
+Indica si la respuesta se puede enviar de forma segura sin revisión manual.
+
+### reply_type
+Valores iniciales:
+- pedir_datos
+- confirmar_recepcion
+- seguimiento_simple
+- revision_humana
+- proponer_visita
+- responder_informacion_general
+
+### respuesta_lista_para_enviar
+Texto final, breve y utilizable para enviar o revisar.
+
+### fecha_followup
+Fecha recomendada de revisión del caso.
+
+---
+
+## 7. Reglas iniciales por tipo de necesidad
+
+### presupuesto
+- suele requerir datos mínimos
+- no debe devolver presupuesto final automático
+- puede pedir datos o proponer visita
+- auto_reply_allowed puede ser true si solo pide datos
+- auto_reply_allowed debe ser false si entra en valoración sensible
+
+### visita_tecnica
+- puede responder proponiendo visita o recogida previa de datos
+- requiere_visita = true
+- auto_reply_allowed puede ser true si solo propone siguiente paso general
+
+### plazo
+- no debe prometer fecha exacta sin agenda real
+- puede responder de forma orientativa o dejar revisión humana
+
+### cobertura_zona
+- si no hay regla de cobertura definida, zona_confirmada = revisar
+- puede pedir municipio o código postal
+
+### coste_desplazamiento
+- si no hay política definida, debe escalar a revisión humana
+- no debe inventar coste
+
+### seguimiento
+- prioridad normalmente baja o media
+- puede dejar respuesta segura y fecha_followup próxima
+
+### soporte_postventa
+- score_oportunidad bajo
+- prioridad media o alta según bloqueo
+- revisión humana casi siempre
+
+### informacion_general
+- puede responder con mensaje general o pedir aclaración
+
+### urgencia
+- aumenta prioridad
+- no implica necesariamente auto_reply_allowed = false
+- pero sí puede requerir revisión más rápida
+
+---
+
+## 8. Siguiente acción
+
+### Valores iniciales permitidos
+- pedir_datos_faltantes
+- proponer_visita
+- derivar_a_revision_humana
+- responder_con_informacion
+- confirmar_recepcion
+- no_priorizar
+
+### Regla
+La siguiente acción debe ser clara y operativa.
+No debe quedarse en una etiqueta ambigua.
+
+---
+
+## 9. Estado
+
+### Valores iniciales permitidos
+- nuevo
+- falta_info
+- listo_para_contactar
+- seguimiento
+- revision_humana
+- descartado
+
+### Reglas base
+- `falta_info` → faltan datos mínimos
+- `listo_para_contactar` → se puede avanzar con seguridad
+- `seguimiento` → retoma consulta anterior
+- `revision_humana` → requiere validación del negocio
+- `descartado` → spam o no encaja
+
+---
+
+## 10. Qué hace fuerte a esta V2
+Esta V2 no intenta calcular el presupuesto final automáticamente.
+
+Su valor está en:
+- filtrar mejor
+- pedir mejor
+- orientar el siguiente paso
+- y responder antes sin inventar información sensible
+
+Eso la hace más vendible y más segura.
