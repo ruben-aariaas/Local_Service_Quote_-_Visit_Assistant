@@ -1,0 +1,359 @@
+# Parse Logic V2 — Local Service Quote & Visit Assistant
+
+## Objetivo
+Definir cómo se validará y normalizará la salida del modelo para evitar:
+- valores fuera de contrato
+- campos inconsistentes
+- respuestas demasiado arriesgadas
+- salidas incompletas o poco operativas
+
+El parser no sustituye la lógica de negocio, pero sí deja la salida en una forma fiable para que luego el flujo pueda trabajar con ella.
+
+---
+
+## 1. Campos esperados del modelo
+
+La salida esperada es:
+
+- tipo_servicio
+- tipo_necesidad
+- prioridad
+- score_oportunidad
+- datos_faltantes
+- resumen
+- siguiente_accion
+- requiere_visita
+- requiere_fotos
+- zona_confirmada
+- respuesta_lista_para_enviar
+- auto_reply_allowed
+- reply_type
+- estado
+- human_review_required
+
+---
+
+## 2. Validación de enums
+
+### tipo_servicio válidos
+- climatizacion
+- ventanas_cerramientos
+- reforma_bano
+- reforma_cocina
+- electricidad_fontaneria
+- reforma_general
+- otro_servicio_local
+
+### tipo_necesidad válidos
+- presupuesto
+- visita_tecnica
+- plazo
+- cobertura_zona
+- coste_desplazamiento
+- seguimiento
+- soporte_postventa
+- informacion_general
+- urgencia
+
+### prioridad válidos
+- alta
+- media
+- baja
+
+### score_oportunidad válidos
+- alto
+- medio
+- bajo
+
+### siguiente_accion válidos
+- pedir_datos_faltantes
+- proponer_visita
+- derivar_a_revision_humana
+- responder_con_informacion
+- confirmar_recepcion
+- no_priorizar
+
+### zona_confirmada válidos
+- si
+- no
+- revisar
+
+### reply_type válidos
+- pedir_datos
+- confirmar_recepcion
+- seguimiento_simple
+- revision_humana
+- proponer_visita
+- responder_informacion_general
+
+### estado válidos
+- nuevo
+- falta_info
+- listo_para_contactar
+- seguimiento
+- revision_humana
+- descartado
+
+---
+
+## 3. Valores permitidos en datos_faltantes
+
+Solo se permiten estas claves:
+- municipio
+- codigo_postal
+- tipo_trabajo
+- numero_unidades
+- medidas_aprox
+- fotos
+- urgencia
+- visita_deseada
+- instalacion_nueva_o_sustitucion
+- tipo_material
+- reforma_parcial_o_integral
+- descripcion_trabajo
+
+### Regla
+Si el modelo devuelve frases libres o claves no válidas, el parser debe:
+- intentar normalizar si es evidente
+- y si no, eliminar esos valores
+
+---
+
+## 4. Normalización de datos_faltantes
+
+### Objetivo
+Evitar que el modelo devuelva variantes como:
+- “fotos del trabajo”
+- “medidas”
+- “ubicación”
+- “tipo de instalación”
+- “urgencia del caso”
+
+### Normalizaciones recomendadas
+- cualquier referencia a fotos o imágenes → fotos
+- cualquier referencia a municipio, localidad o zona → municipio
+- cualquier referencia a código postal → codigo_postal
+- cualquier referencia a medidas → medidas_aprox
+- cualquier referencia a número de aparatos, equipos o unidades → numero_unidades
+- cualquier referencia a tipo de instalación o sustitución → instalacion_nueva_o_sustitucion
+- cualquier referencia a material → tipo_material
+- cualquier referencia a descripción del trabajo → descripcion_trabajo
+- cualquier referencia a parcial/integral → reforma_parcial_o_integral
+- cualquier referencia a urgencia → urgencia
+- cualquier referencia a si desea visita → visita_deseada
+- cualquier referencia a tipo de trabajo → tipo_trabajo
+
+### Regla final
+datos_faltantes debe quedar como:
+- lista
+- sin duplicados
+- con claves limpias y válidas
+
+---
+
+## 5. Defaults recomendados
+
+Si un campo viene mal o no viene, aplicar estos defaults:
+
+### tipo_servicio
+- default: otro_servicio_local
+
+### tipo_necesidad
+- default: informacion_general
+
+### prioridad
+- default: media
+
+### score_oportunidad
+- default: medio
+
+### datos_faltantes
+- default: []
+
+### resumen
+- default: "Resumen no disponible"
+
+### siguiente_accion
+- default: derivar_a_revision_humana
+
+### requiere_visita
+- default: false
+
+### requiere_fotos
+- default: false
+
+### zona_confirmada
+- default: revisar
+
+### respuesta_lista_para_enviar
+- default: ""
+
+### auto_reply_allowed
+- default: false
+
+### reply_type
+- default: revision_humana
+
+### estado
+- default: revision_humana
+
+### human_review_required
+- default: true
+
+---
+
+## 6. Reglas de coherencia mínima
+
+### Regla 1
+Si datos_faltantes tiene elementos:
+- normalmente estado debe pasar a falta_info
+- y siguiente_accion debe tender a pedir_datos_faltantes
+- salvo casos sensibles que deban ir a revision_humana
+
+### Regla 2
+Si auto_reply_allowed = true:
+- reply_type no debería ser revision_humana
+- respuesta_lista_para_enviar no debería estar vacía
+
+### Regla 3
+Si reply_type = revision_humana:
+- auto_reply_allowed debe ser false
+- human_review_required debe ser true
+
+### Regla 4
+Si tipo_necesidad = soporte_postventa:
+- score_oportunidad debe tender a bajo
+- auto_reply_allowed debe tender a false
+- estado debe tender a revision_humana
+
+### Regla 5
+Si tipo_necesidad = seguimiento:
+- estado debe tender a seguimiento
+- reply_type puede ser seguimiento_simple
+- auto_reply_allowed puede ser true si la respuesta es segura
+
+### Regla 6
+Si tipo_necesidad = cobertura_zona y no hay validación clara:
+- zona_confirmada debe tender a revisar
+- no se debe responder como si la cobertura estuviera confirmada
+
+### Regla 7
+Si tipo_necesidad = coste_desplazamiento:
+- auto_reply_allowed debe tender a false
+- salvo que exista una política definida más adelante
+
+### Regla 8
+Si tipo_necesidad = presupuesto:
+- respuesta_lista_para_enviar no debe parecer un presupuesto final
+- auto_reply_allowed solo puede ser true si la respuesta pide datos o propone siguiente paso sin cerrar cifra
+
+---
+
+## 7. Guardarraíles de contenido
+
+### Riesgo 1 — precio inventado
+Si la respuesta contiene patrones que parezcan:
+- importe cerrado
+- rango de precio inventado
+- “costaría X”
+sin fuente validada, el parser debe:
+- marcar auto_reply_allowed = false
+- reply_type = revision_humana
+- human_review_required = true
+
+### Riesgo 2 — fecha cerrada inventada
+Si la respuesta promete:
+- día concreto
+- plazo exacto cerrado
+sin agenda conectada, el parser debe:
+- marcar auto_reply_allowed = false
+- reply_type = revision_humana
+
+### Riesgo 3 — cobertura confirmada sin base
+Si la respuesta dice o implica:
+- “sí, trabajamos en tu zona”
+sin regla de cobertura real, el parser debe:
+- forzar zona_confirmada = revisar
+- human_review_required = true
+
+### Riesgo 4 — coste de desplazamiento inventado
+Si la respuesta parece afirmar:
+- precio de visita
+- kilometraje
+- coste de desplazamiento
+sin política definida, el parser debe:
+- auto_reply_allowed = false
+- reply_type = revision_humana
+
+---
+
+## 8. Casos donde el parser debe ser conservador
+
+El parser debe endurecer la salida cuando detecte:
+- presupuesto
+- cobertura_zona
+- coste_desplazamiento
+- soporte_postventa
+- urgencia con posible bloqueo
+- respuesta demasiado segura para el contexto
+
+En estos casos, si hay duda:
+- human_review_required = true
+- auto_reply_allowed = false
+- estado = revision_humana
+
+---
+
+## 9. Casos donde el parser puede permitir automatización
+
+El parser puede permitir respuestas automáticas cuando:
+- solo faltan datos básicos
+- se confirma recepción
+- se propone visita sin fecha cerrada
+- se responde seguimiento simple
+- se responde información general no sensible
+
+En estos casos:
+- auto_reply_allowed = true
+- human_review_required puede ser false
+- reply_type debe ser coherente
+
+---
+
+## 10. Preparación para Business Corrections
+
+La salida del parser no es la última verdad del sistema.
+Después del parse debe existir una capa de reglas de negocio que pueda:
+- corregir inconsistencias con los datos originales
+- quitar datos_faltantes ya informados en el payload
+- reforzar cobertura, urgencia o soporte
+- generar send_status
+- generar fecha_followup
+- preparar la vista cliente
+
+El parser debe dejar la base limpia.
+La capa posterior debe adaptarla al negocio.
+
+---
+
+## 11. Filosofía del parser
+
+El parser no debe intentar “salvarlo todo”.
+Debe:
+- limpiar
+- validar
+- normalizar
+- y ser conservador en lo sensible
+
+Si hay duda, es mejor una salida más segura que una salida demasiado atrevida.
+
+---
+
+## 12. Resultado esperado
+
+Una salida:
+- estructurada
+- coherente
+- sin valores basura
+- sin promesas sensibles inventadas
+- y preparada para pasar a reglas de negocio y hoja operativa
