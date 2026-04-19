@@ -1,0 +1,299 @@
+# Risk Policy V2 — Local Service Quote & Visit Assistant
+
+## Objetivo
+Definir los riesgos del sistema y las reglas que limitan su comportamiento para que la automatización solo responda lo que puede responder con seguridad.
+
+El sistema no debe sobreprometer.
+Debe ayudar a avanzar con criterio.
+
+---
+
+## 1. Principio general de seguridad
+
+La automatización solo puede responder automáticamente cuando:
+- no compromete un precio final
+- no compromete una disponibilidad real
+- no compromete una fecha cerrada
+- no compromete una cobertura geográfica no validada
+- no compromete una decisión técnica
+- no puede generar una mala expectativa comercial
+
+Si existe duda razonable, debe escalar a revisión humana.
+
+---
+
+## 2. Riesgos principales
+
+### Riesgo 1 — Precio incorrecto
+El sistema no debe dar presupuestos cerrados ni importes finales si no existe una política o tabla validada por el negocio.
+
+### Riesgo 2 — Plazo incorrecto
+El sistema no debe prometer tiempos exactos ni fechas cerradas si no existe agenda o disponibilidad conectada.
+
+### Riesgo 3 — Cobertura de zona incorrecta
+El sistema no debe confirmar que el negocio trabaja en una zona concreta si no hay una regla definida de cobertura.
+
+### Riesgo 4 — Coste de desplazamiento inventado
+El sistema no debe decir si hay coste de visita, desplazamiento o kilometraje si el negocio no ha definido esa política.
+
+### Riesgo 5 — Clasificación errónea de necesidad
+El sistema no debe tratar soporte o postventa como si fuera una oportunidad comercial.
+
+### Riesgo 6 — Falta de datos críticos
+El sistema no debe avanzar como si el caso estuviera listo si faltan datos mínimos relevantes.
+
+### Riesgo 7 — Respuesta demasiado genérica o confusa
+El sistema no debe responder con textos vacíos que no ayuden a avanzar.
+
+### Riesgo 8 — Tono inadecuado
+La respuesta no debe sonar robótica, agresiva ni excesivamente larga.
+
+---
+
+## 3. Guardarraíles globales
+
+### Regla 1
+No inventar:
+- precio
+- plazo
+- disponibilidad
+- cobertura
+- coste de desplazamiento
+- condiciones técnicas
+
+### Regla 2
+No confirmar:
+- visita cerrada
+- presupuesto final
+- reserva de fecha
+- cobertura geográfica
+si no hay validación del negocio
+
+### Regla 3
+Si faltan datos relevantes, la salida debe ir hacia:
+- pedir_datos_faltantes
+- o derivar_a_revision_humana
+
+### Regla 4
+Si el caso implica validación técnica, el sistema debe:
+- marcar `human_review_required = true`
+- y normalmente `auto_reply_allowed = false`
+
+### Regla 5
+Si la respuesta es segura, debe:
+- ser corta
+- clara
+- concreta
+- y dejar siguiente paso
+
+### Regla 6
+Si el sistema no tiene suficiente contexto para orientar bien, debe reconocerlo de forma operativa y segura, no improvisar.
+
+---
+
+## 4. Política de auto_reply_allowed
+
+### auto_reply_allowed = true
+Solo cuando la respuesta:
+- pide datos faltantes
+- confirma recepción
+- propone visita sin cerrarla
+- responde una duda general no sensible
+- responde seguimiento simple
+- no compromete precio, fecha, cobertura o coste
+
+### auto_reply_allowed = false
+Cuando la respuesta:
+- implique presupuesto cerrado
+- implique plazo exacto
+- implique cobertura de zona no validada
+- implique coste de desplazamiento no definido
+- implique soporte o postventa sensible
+- requiera criterio técnico
+- tenga ambigüedad relevante
+
+---
+
+## 5. Política de review humana
+
+### human_review_required = true
+Normalmente en estos casos:
+- presupuesto sensible
+- cobertura de zona no confirmada
+- coste de desplazamiento no definido
+- urgencia alta con implicación operativa
+- soporte_postventa
+- consultas ambiguas
+- dudas técnicas
+- casos con varias interpretaciones
+
+### human_review_required = false
+Puede ser false cuando:
+- solo faltan datos
+- la respuesta es una confirmación segura
+- se propone siguiente paso general
+- se responde seguimiento simple
+- no hay riesgo comercial o técnico
+
+---
+
+## 6. Reglas por tipo de necesidad
+
+### presupuesto
+- no dar precio final automático
+- si faltan datos, pedirlos
+- si los datos son suficientes pero sigue habiendo sensibilidad, revisión humana
+- puede responder con orientación de proceso, no con cifra cerrada
+
+### visita_tecnica
+- puede proponerse como siguiente paso
+- no debe cerrarse fecha concreta
+- puede pedir municipio, fotos o descripción antes de la visita
+
+### plazo
+- puede responder de forma general
+- no debe dar fecha cerrada sin agenda
+- si el cliente pide algo urgente, subir prioridad
+
+### cobertura_zona
+- pedir municipio o código postal si falta
+- si no hay política de cobertura, `zona_confirmada = revisar`
+- no confirmar cobertura sin regla
+
+### coste_desplazamiento
+- si no hay política definida, revisión humana
+- si falta ubicación, pedirla
+- no inventar coste
+
+### seguimiento
+- prioridad normalmente baja o media
+- puede responder confirmando revisión y siguiente paso
+- puede tener `auto_reply_allowed = true`
+
+### soporte_postventa
+- `score_oportunidad = bajo`
+- prioridad media o alta según bloqueo
+- casi siempre revisión humana
+- no mezclar con oportunidad comercial
+
+### informacion_general
+- puede responder con información general o pedir aclaración
+- si sigue siendo ambigua, pedir más contexto
+
+### urgencia
+- aumenta prioridad
+- no obliga por sí sola a respuesta automática
+- si afecta operativa real, revisión humana
+
+---
+
+## 7. Reglas sobre fotos y visita
+
+### requiere_fotos = true
+Cuando:
+- el tipo de trabajo lo aconseja
+- la consulta es demasiado abierta
+- hay que valorar estado, medidas o espacio
+- la decisión sin fotos sería poco fiable
+
+### requiere_visita = true
+Cuando:
+- el trabajo no puede orientarse bien solo por texto
+- hay varias variables técnicas
+- el negocio suele valorar in situ
+- el siguiente paso natural es una visita
+
+### Regla
+Pedir fotos o sugerir visita no es una debilidad del sistema.
+Es una forma de evitar errores y avanzar con más criterio.
+
+---
+
+## 8. Reglas de prioridad
+
+### prioridad alta
+- urgencia real
+- buena oportunidad comercial con intención clara
+- seguimiento caliente
+- bloqueo o incidencia relevante
+- solicitud muy accionable
+
+### prioridad media
+- interés real pero incompleto
+- consulta útil que necesita datos
+- duda razonable sin urgencia
+
+### prioridad baja
+- información general poco accionable
+- seguimiento no urgente
+- ruido
+- casos poco claros o de bajo valor inmediato
+
+---
+
+## 9. Reglas de score_oportunidad
+
+### score alto
+- intención comercial clara
+- servicio identificable
+- caso accionable
+- datos bastante completos
+
+### score medio
+- hay interés real, pero faltan datos
+- todavía no se puede orientar bien el siguiente paso
+
+### score bajo
+- ruido o spam
+- soporte_postventa
+- consulta vaga
+- caso poco accionable en ese momento
+
+---
+
+## 10. Respuesta segura
+
+Una respuesta segura:
+- no inventa
+- no promete
+- no confunde
+- no es demasiado larga
+- y siempre deja claro el siguiente paso
+
+### Ejemplos de respuesta segura
+- pedir fotos
+- pedir municipio
+- pedir tipo de trabajo
+- decir que revisarán la solicitud
+- proponer una valoración o visita
+- responder seguimiento simple
+
+### Ejemplos de respuesta no segura
+- cerrar presupuesto
+- dar un plazo exacto
+- decir que sí trabajan en una zona no validada
+- confirmar coste de desplazamiento sin política definida
+
+---
+
+## 11. Estados recomendados
+
+- `nuevo` → ha entrado pero todavía no se ha determinado siguiente paso claro
+- `falta_info` → faltan datos para avanzar
+- `listo_para_contactar` → se puede responder o llamar con criterio
+- `seguimiento` → retoma un caso anterior
+- `revision_humana` → necesita validación del negocio
+- `descartado` → spam o no aplica
+
+---
+
+## 12. Regla final de diseño
+
+Este sistema no debe intentar parecer más listo de lo que realmente es.
+
+Su valor no está en “resolver todo solo”.
+Su valor está en:
+- ordenar mejor
+- pedir mejor
+- responder más rápido
+- y dejar al negocio solo las decisiones donde realmente hace falta criterio humano.
