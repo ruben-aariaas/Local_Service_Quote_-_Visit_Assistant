@@ -1,0 +1,271 @@
+# Dataset Test V2 — Local Service Quote & Visit Assistant
+
+## Objetivo
+Definir un conjunto inicial de casos realistas para validar la lógica del sistema.
+
+El dataset debe cubrir:
+- distintos tipos de servicio
+- distintas necesidades
+- distintos niveles de urgencia
+- consultas completas e incompletas
+- casos comerciales, operativos y de soporte
+
+---
+
+## Campos recomendados por caso
+- id
+- nombre
+- email
+- telefono
+- municipio
+- mensaje
+- tipo_servicio_esperado
+- tipo_necesidad_esperada
+- prioridad_esperada
+- score_esperado
+- datos_faltantes_esperados
+- requiere_visita_esperado
+- requiere_fotos_esperado
+- zona_confirmada_esperado
+- auto_reply_allowed_esperado
+- reply_type_esperado
+
+---
+
+## Casos de prueba iniciales
+
+### Caso 1 — Presupuesto de aire acondicionado con datos parciales
+- id: 1
+- nombre: Carlos Martín
+- email: carlos@email.com
+- telefono: 611111111
+- municipio: Murcia
+- mensaje: Quería presupuesto para instalar dos splits en casa.
+- tipo_servicio_esperado: climatizacion
+- tipo_necesidad_esperada: presupuesto
+- prioridad_esperada: media
+- score_esperado: medio
+- datos_faltantes_esperados: [instalacion_nueva_o_sustitucion, fotos]
+- requiere_visita_esperado: false
+- requiere_fotos_esperado: true
+- zona_confirmada_esperado: revisar
+- auto_reply_allowed_esperado: true
+- reply_type_esperado: pedir_datos
+
+### Caso 2 — Reforma de baño con solicitud de visita
+- id: 2
+- nombre: Laura Sánchez
+- email: laura@email.com
+- telefono: 622222222
+- municipio: Elche
+- mensaje: Quiero reformar un baño y me gustaría que vinierais a verlo.
+- tipo_servicio_esperado: reforma_bano
+- tipo_necesidad_esperada: visita_tecnica
+- prioridad_esperada: alta
+- score_esperado: alto
+- datos_faltantes_esperados: [fotos, reforma_parcial_o_integral]
+- requiere_visita_esperado: true
+- requiere_fotos_esperado: true
+- zona_confirmada_esperado: revisar
+- auto_reply_allowed_esperado: true
+- reply_type_esperado: proponer_visita
+
+### Caso 3 — Consulta de cobertura geográfica
+- id: 3
+- nombre: Javier Ruiz
+- email: javier@email.com
+- telefono: ""
+- municipio: ""
+- mensaje: Trabajáis también por la zona de San Javier?
+- tipo_servicio_esperado: otro_servicio_local
+- tipo_necesidad_esperada: cobertura_zona
+- prioridad_esperada: media
+- score_esperado: medio
+- datos_faltantes_esperados: [municipio]
+- requiere_visita_esperado: false
+- requiere_fotos_esperado: false
+- zona_confirmada_esperado: revisar
+- auto_reply_allowed_esperado: true
+- reply_type_esperado: pedir_datos
+
+### Caso 4 — Consulta de desplazamiento
+- id: 4
+- nombre: Marta López
+- email: marta@email.com
+- telefono: 633333333
+- municipio: Torrevieja
+- mensaje: Cobráis desplazamiento para venir a ver una instalación?
+- tipo_servicio_esperado: otro_servicio_local
+- tipo_necesidad_esperada: coste_desplazamiento
+- prioridad_esperada: media
+- score_esperado: medio
+- datos_faltantes_esperados: [tipo_trabajo]
+- requiere_visita_esperado: false
+- requiere_fotos_esperado: false
+- zona_confirmada_esperado: revisar
+- auto_reply_allowed_esperado: false
+- reply_type_esperado: revision_humana
+
+### Caso 5 — Pregunta por plazo
+- id: 5
+- nombre: Sergio Navarro
+- email: sergio@email.com
+- telefono: 644444444
+- municipio: Getafe
+- mensaje: Si os paso hoy la información, cuánto tardaríais en venir?
+- tipo_servicio_esperado: otro_servicio_local
+- tipo_necesidad_esperada: plazo
+- prioridad_esperada: media
+- score_esperado: medio
+- datos_faltantes_esperados: [tipo_trabajo]
+- requiere_visita_esperado: false
+- requiere_fotos_esperado: false
+- zona_confirmada_esperado: revisar
+- auto_reply_allowed_esperado: true
+- reply_type_esperado: responder_informacion_general
+
+### Caso 6 — Seguimiento de presupuesto
+- id: 6
+- nombre: Elena Torres
+- email: elena@email.com
+- telefono: 655555555
+- municipio: Murcia
+- mensaje: Os escribí la semana pasada para pedir presupuesto y quería saber si hay novedades.
+- tipo_servicio_esperado: otro_servicio_local
+- tipo_necesidad_esperada: seguimiento
+- prioridad_esperada: baja
+- score_esperado: medio
+- datos_faltantes_esperados: []
+- requiere_visita_esperado: false
+- requiere_fotos_esperado: false
+- zona_confirmada_esperado: revisar
+- auto_reply_allowed_esperado: true
+- reply_type_esperado: seguimiento_simple
+
+### Caso 7 — Soporte postventa
+- id: 7
+- nombre: Paula Gómez
+- email: paula@email.com
+- telefono: 666666666
+- municipio: Valencia
+- mensaje: Me instalasteis el aire hace dos meses y ahora no enfría bien.
+- tipo_servicio_esperado: climatizacion
+- tipo_necesidad_esperada: soporte_postventa
+- prioridad_esperada: alta
+- score_esperado: bajo
+- datos_faltantes_esperados: []
+- requiere_visita_esperado: false
+- requiere_fotos_esperado: false
+- zona_confirmada_esperado: revisar
+- auto_reply_allowed_esperado: false
+- reply_type_esperado: revision_humana
+
+### Caso 8 — Consulta muy abierta
+- id: 8
+- nombre: Andrés Pérez
+- email: andres@email.com
+- telefono: ""
+- municipio: ""
+- mensaje: Necesito información para una reforma.
+- tipo_servicio_esperado: reforma_general
+- tipo_necesidad_esperada: informacion_general
+- prioridad_esperada: media
+- score_esperado: medio
+- datos_faltantes_esperados: [municipio, descripcion_trabajo, fotos]
+- requiere_visita_esperado: false
+- requiere_fotos_esperado: true
+- zona_confirmada_esperado: revisar
+- auto_reply_allowed_esperado: true
+- reply_type_esperado: pedir_datos
+
+### Caso 9 — Urgencia de fontanería
+- id: 9
+- nombre: Rosa Jiménez
+- email: rosa@email.com
+- telefono: 677777777
+- municipio: Leganés
+- mensaje: Tengo una fuga de agua y necesitaría que vinierais cuanto antes.
+- tipo_servicio_esperado: electricidad_fontaneria
+- tipo_necesidad_esperada: urgencia
+- prioridad_esperada: alta
+- score_esperado: alto
+- datos_faltantes_esperados: [tipo_trabajo]
+- requiere_visita_esperado: true
+- requiere_fotos_esperado: false
+- zona_confirmada_esperado: revisar
+- auto_reply_allowed_esperado: false
+- reply_type_esperado: revision_humana
+
+### Caso 10 — Ventanas con medidas
+- id: 10
+- nombre: Víctor Cano
+- email: victor@email.com
+- telefono: 688888888
+- municipio: Alicante
+- mensaje: Quería presupuesto para cambiar 4 ventanas de PVC. Tengo medidas aproximadas y fotos si os sirven.
+- tipo_servicio_esperado: ventanas_cerramientos
+- tipo_necesidad_esperada: presupuesto
+- prioridad_esperada: alta
+- score_esperado: alto
+- datos_faltantes_esperados: [medidas_aprox]
+- requiere_visita_esperado: false
+- requiere_fotos_esperado: true
+- zona_confirmada_esperado: revisar
+- auto_reply_allowed_esperado: true
+- reply_type_esperado: pedir_datos
+
+### Caso 11 — Cocina con intención clara pero incompleta
+- id: 11
+- nombre: Nuria Martín
+- email: nuria@email.com
+- telefono: 699999999
+- municipio: Alcorcón
+- mensaje: Quiero reformar mi cocina y me gustaría saber cómo trabajáis.
+- tipo_servicio_esperado: reforma_cocina
+- tipo_necesidad_esperada: informacion_general
+- prioridad_esperada: media
+- score_esperado: medio
+- datos_faltantes_esperados: [reforma_parcial_o_integral, fotos]
+- requiere_visita_esperado: false
+- requiere_fotos_esperado: true
+- zona_confirmada_esperado: revisar
+- auto_reply_allowed_esperado: true
+- reply_type_esperado: responder_informacion_general
+
+### Caso 12 — Spam o poco útil
+- id: 12
+- nombre: Marketing Pro
+- email: promo@spam.com
+- telefono: ""
+- municipio: ""
+- mensaje: Podemos multiplicar vuestras ventas con nuestro servicio SEO para instaladores.
+- tipo_servicio_esperado: otro_servicio_local
+- tipo_necesidad_esperada: informacion_general
+- prioridad_esperada: baja
+- score_esperado: bajo
+- datos_faltantes_esperados: []
+- requiere_visita_esperado: false
+- requiere_fotos_esperado: false
+- zona_confirmada_esperado: revisar
+- auto_reply_allowed_esperado: false
+- reply_type_esperado: revision_humana
+
+---
+
+## Qué debe demostrar este dataset
+- que el sistema no solo entiende presupuestos
+- que distingue seguimiento de soporte
+- que pide mejor los datos
+- que no inventa cobertura o desplazamiento
+- que sabe cuándo escalar
+- que prepara mejor el siguiente paso
+
+---
+
+## Criterio de calidad
+Un buen resultado no es “responder todo”.
+Un buen resultado es:
+- responder lo seguro
+- pedir lo correcto
+- escalar lo sensible
+- y no confundir oportunidad comercial con postventa o ruido
