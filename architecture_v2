@@ -1,0 +1,194 @@
+# Architecture V2 — Local Service Quote & Visit Assistant
+
+## Objetivo del proyecto
+Construir un asistente de primera atención para negocios de servicios locales que ayude a gestionar mejor presupuestos, visitas, seguimientos y consultas frecuentes sin automatizar respuestas sensibles de forma incorrecta.
+
+---
+
+## Lógica general del sistema
+El sistema debe ser capaz de:
+
+1. Recibir una consulta real
+2. Entender el tipo de servicio
+3. Entender la necesidad principal
+4. Detectar qué datos faltan
+5. Decidir si hacen falta fotos
+6. Decidir si hace falta visita
+7. Asignar prioridad
+8. Generar una respuesta segura
+9. Decidir si esa respuesta puede enviarse o requiere revisión
+10. Registrar el resultado en una hoja operativa
+
+---
+
+## Modo de construcción
+Este proyecto se diseña desde el inicio como una V2.
+
+Eso significa:
+- más foco en lógica de negocio
+- más foco en guardarraíles
+- más foco en operativa real
+- menos foco en una demo demasiado básica
+
+La prioridad no es “que haga muchas cosas”.
+La prioridad es que haga bien las correctas.
+
+---
+
+## Estructura documental recomendada
+
+### 1. system_overview_v2.md
+Define:
+- problema de negocio
+- vertical objetivo
+- qué hace el sistema
+- qué no hace
+- posicionamiento comercial
+
+### 2. service_logic_v2.md
+Define:
+- tipos de servicio
+- tipos de necesidad
+- datos mínimos por servicio
+- outputs principales
+- estados y siguientes acciones
+
+### 3. risk_policy_v2.md
+Define:
+- riesgos del sistema
+- política de respuesta segura
+- guardarraíles
+- cuándo escalar a revisión humana
+
+### 4. dataset_test_v2.md
+Contendrá:
+- casos de prueba
+- inputs
+- expected outputs
+- variaciones realistas de consultas
+
+### 5. prompt_logic_v2.md
+Contendrá:
+- prompt principal del sistema
+- estructura JSON esperada
+- reglas de clasificación
+- reglas de seguridad
+- reglas de auto_reply_allowed
+
+### 6. parse_logic_v2.md
+Contendrá:
+- lógica de validación del output del modelo
+- normalización de campos
+- defaults
+- guardarraíles técnicos
+- correcciones mínimas
+
+### 7. business_rules_v2.md
+Contendrá:
+- reglas finales de negocio
+- correcciones posteriores al parse
+- criterios de follow-up
+- lógica de estados operativos
+- preparación de vista cliente
+
+### 8. operational_sheet_v2.md
+Definirá:
+- hoja técnica
+- hoja operativa de cliente
+- columnas
+- lógica de uso
+- campos visibles y campos internos
+
+### 9. technical_flow_v2.md
+Describirá:
+- nodos principales
+- flujo completo
+- ramas técnicas y operativas
+- inputs y outputs entre nodos
+
+### 10. commercial_positioning_v2.md
+Contendrá:
+- resumen comercial
+- qué problema resuelve
+- cómo venderlo
+- objeciones
+- oferta de demo / piloto / implantación
+
+---
+
+## Capas del sistema
+
+### Capa 1 — Entrada
+Consulta real por:
+- formulario
+- webhook
+- email
+- WhatsApp (futuro)
+- otra fuente equivalente
+
+### Capa 2 — Normalización
+Convierte la entrada en una estructura consistente:
+- nombre
+- email o teléfono
+- mensaje
+- municipio si existe
+- canal de entrada
+- metadatos
+
+### Capa 3 — Interpretación
+El modelo analiza:
+- tipo_servicio
+- tipo_necesidad
+- prioridad
+- score_oportunidad
+- datos_faltantes
+- requiere_fotos
+- requiere_visita
+- respuesta sugerida
+
+### Capa 4 — Validación y corrección
+Se corrige la salida para:
+- evitar respuestas sensibles erróneas
+- reforzar reglas de negocio
+- asegurar coherencia entre campos
+
+### Capa 5 — Operativa
+Se guarda en:
+- una hoja técnica completa
+- una hoja operativa simplificada para cliente
+
+### Capa 6 — Seguimiento
+Se propone:
+- fecha_followup
+- siguiente_accion
+- estado
+- posibilidad de envío o revisión
+
+---
+
+## Filosofía de diseño
+
+### Regla 1
+No intentar automatizar lo que requiere validación técnica real.
+
+### Regla 2
+Automatizar lo seguro:
+- pedir datos
+- confirmar recepción
+- responder seguimiento simple
+- proponer visita sin cerrarla
+- responder información general no sensible
+
+### Regla 3
+Escalar lo sensible:
+- precio final
+- plazo exacto
+- cobertura no validada
+- desplazamiento no definido
+- soporte delicado
+- ambigüedad relevante
+
+---
+
+## Resultado esperado
+Una herramienta que no se limite a “clasificar contactos”, sino que ayude a convertir consultas incompletas en casos mejor preparados para presupuestar, visitar o responder con criterio.
