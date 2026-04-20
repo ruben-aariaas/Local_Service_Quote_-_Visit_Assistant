@@ -1,0 +1,186 @@
+# Commercial Demo V2 — Local Service Quote & Visit Assistant
+
+## Nombre del proyecto
+Local Service Quote & Visit Assistant
+
+## Nombre interno en español
+Asistente de Presupuestos, Visitas y Seguimiento para Servicios Locales
+
+---
+
+## Qué problema resuelve
+Muchos negocios de servicios locales reciben consultas por:
+- presupuesto
+- visita técnica
+- plazo
+- cobertura de zona
+- desplazamiento
+- seguimiento
+- soporte o postventa
+- urgencias
+
+Estas consultas suelen llegar por formularios, email, WhatsApp o llamadas, y muchas veces:
+- llegan incompletas
+- mezclan intención comercial con dudas generales
+- requieren varios mensajes de ida y vuelta
+- consumen tiempo antes de saber si merece la pena avanzar
+- y se responden tarde o sin un criterio claro
+
+Esto provoca:
+- pérdida de tiempo manual
+- peor filtrado comercial
+- seguimiento pobre
+- y oportunidades que se enfrían
+
+---
+
+## Qué hace el sistema
+El sistema:
+- recibe la consulta
+- detecta el tipo de servicio
+- detecta la necesidad principal
+- identifica qué datos faltan
+- decide si hacen falta fotos
+- decide si hace falta visita
+- genera una respuesta segura
+- decide si esa respuesta se puede enviar o requiere revisión
+- y deja el caso en una hoja operativa clara
+
+---
+
+## Qué NO hace esta V2
+Esta V2:
+- no da presupuestos cerrados automáticos
+- no promete plazos exactos
+- no confirma cobertura sin validación
+- no confirma costes de desplazamiento sin política definida
+- no sustituye una revisión técnica real
+- no cierra trabajos automáticamente
+
+---
+
+## Cómo debe venderse
+No venderlo como chatbot.
+No venderlo como calculadora automática de presupuestos.
+
+Venderlo como:
+**asistente de primera atención comercial y operativa para presupuestos, visitas, seguimiento y consultas frecuentes.**
+
+---
+
+## Qué valor aporta
+- responde antes
+- pide mejor los datos
+- reduce mensajes innecesarios
+- filtra mejor oportunidades reales
+- separa casos sensibles de casos autoenviables
+- mejora seguimiento
+- y deja una vista operativa simple para el negocio
+
+---
+
+## Casos que cubre esta V2
+
+### 1. Presupuesto
+Ejemplo:
+“Quería presupuesto para instalar dos splits en casa.”
+
+Salida esperada:
+- detecta servicio
+- pide datos mínimos
+- no da precio final
+- deja respuesta segura
+
+### 2. Visita técnica
+Ejemplo:
+“Quiero reformar un baño y me gustaría que vinierais a verlo.”
+
+Salida esperada:
+- detecta visita técnica
+- propone siguiente paso
+- pide fotos si hace falta
+- no cierra fecha exacta
+
+### 3. Plazo
+Ejemplo:
+“Si os paso hoy la información, cuánto tardaríais en venir?”
+
+Salida esperada:
+- detecta consulta de plazo
+- no promete fecha cerrada
+- pide tipo de trabajo
+- deja respuesta prudente
+
+### 4. Cobertura o desplazamiento
+Ejemplo:
+“¿Trabajáis por esta zona?” / “¿Cobráis desplazamiento?”
+
+Salida esperada:
+- no inventa cobertura
+- no inventa coste
+- pide dato mínimo o deja revisión humana
+
+### 5. Seguimiento
+Ejemplo:
+“Os escribí la semana pasada y quería saber si hay novedades.”
+
+Salida esperada:
+- deja respuesta simple
+- marca seguimiento
+- propone fecha próxima de revisión
+
+### 6. Soporte o urgencia
+Ejemplo:
+“No enfría bien.” / “Tengo una fuga de agua.”
+
+Salida esperada:
+- separa comercial de postventa
+- sube prioridad cuando toca
+- no autoenvía si hay riesgo
+- deja revisión humana
+
+---
+
+## Cómo funciona por dentro
+1. entra una consulta
+2. se normaliza
+3. se analiza con IA
+4. se parsea y corrige
+5. se aplican reglas de negocio
+6. se guarda en hoja técnica y hoja operativa
+
+---
+
+## Salidas principales
+- tipo de servicio
+- tipo de necesidad
+- prioridad
+- score de oportunidad
+- datos faltantes
+- requiere visita
+- requiere fotos
+- respuesta sugerida
+- se puede enviar / no se puede enviar
+- estado
+- fecha de seguimiento
+
+---
+
+## Por qué es útil para negocio pequeño
+Porque no necesita cambiar su sistema desde el día 1.
+
+Puede montarse como:
+- una primera capa sobre formulario actual
+- una hoja operativa simple
+- una forma de ordenar mejor la entrada sin meter CRM complejo
+
+---
+
+## Mensaje comercial correcto
+Este sistema no sustituye a la persona.
+Le quita la parte repetitiva, organiza mejor la entrada y deja la revisión humana donde realmente hace falta.
+
+---
+
+## Resultado esperado
+Una herramienta que ayude a un negocio local a responder mejor, filtrar mejor y perder menos tiempo en la primera atención.
