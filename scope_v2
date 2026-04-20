@@ -1,0 +1,232 @@
+# Scope V2 — Local Service Quote & Visit Assistant
+
+## Objetivo
+Definir con claridad el alcance real de la V2 para evitar ambigüedad técnica, comercial y operativa.
+
+Esta V2 está pensada para ser:
+- útil
+- vendible
+- prudente
+- y fácil de implantar en negocio pequeño o local
+
+---
+
+## Qué incluye esta V2
+
+### 1. Entrada de consultas
+La V2 puede recibir consultas por:
+- webhook
+- formulario conectado
+- entrada estructurada equivalente
+
+La entrada mínima esperada es:
+- nombre
+- email o teléfono
+- municipio si existe
+- mensaje
+
+---
+
+### 2. Clasificación principal
+La V2 clasifica:
+- tipo de servicio
+- tipo de necesidad
+- prioridad
+- score de oportunidad
+
+Esto permite separar:
+- oportunidades comerciales
+- consultas generales
+- seguimientos
+- soporte o postventa
+- urgencias
+
+---
+
+### 3. Detección de datos faltantes
+La V2 detecta qué falta para poder avanzar mejor.
+
+Ejemplos:
+- municipio
+- fotos
+- tipo de trabajo
+- reforma parcial o integral
+- instalación nueva o sustitución
+
+No intenta pedir todo.
+Intenta pedir lo más útil para avanzar.
+
+---
+
+### 4. Lógica de visita y fotos
+La V2 decide si:
+- conviene pedir fotos
+- conviene sugerir visita
+- o conviene esperar más información primero
+
+---
+
+### 5. Respuesta sugerida segura
+La V2 genera una respuesta breve y utilizable que:
+- pide datos
+- propone siguiente paso
+- confirma recepción
+- responde seguimiento simple
+- o deriva a revisión humana
+
+---
+
+### 6. Decisión de autoenvío o revisión
+La V2 indica si la respuesta:
+- se puede enviar
+- o debe revisarse antes
+
+Esto permite separar:
+- automatización segura
+- de casos sensibles o técnicos
+
+---
+
+### 7. Gestión de casos sensibles
+La V2 no automatiza alegremente:
+- precios finales
+- plazos exactos
+- cobertura real
+- coste de desplazamiento
+- soporte delicado
+- urgencias con riesgo operativo
+
+En esos casos:
+- prioriza
+- ordena
+- y deriva a revisión humana
+
+---
+
+### 8. Hoja técnica
+La V2 guarda una salida técnica con:
+- clasificación
+- datos faltantes
+- riesgo
+- respuesta sugerida
+- estado
+- seguimiento
+
+---
+
+### 9. Hoja operativa cliente
+La V2 guarda una vista simplificada para negocio con:
+- prioridad
+- qué falta
+- si requiere visita
+- si requiere fotos
+- respuesta sugerida
+- se puede enviar o no
+- estado
+- fecha de seguimiento
+
+---
+
+## Qué NO incluye esta V2
+
+### 1. No da presupuestos cerrados automáticos
+No calcula importes finales ni cierra precios sin una lógica o fuente validada por el negocio.
+
+---
+
+### 2. No promete fechas exactas
+No confirma agenda real ni da fecha cerrada sin integración con calendario o disponibilidad operativa real.
+
+---
+
+### 3. No confirma cobertura geográfica real
+No afirma si un negocio trabaja en una zona concreta sin una política de cobertura definida.
+
+---
+
+### 4. No calcula desplazamiento o kilometraje
+No informa de coste de desplazamiento si no existe una regla clara definida por el negocio.
+
+---
+
+### 5. No envía WhatsApp automáticamente
+La V2 genera la respuesta y decide si es segura, pero no incluye todavía integración de envío automático por WhatsApp.
+
+---
+
+### 6. No integra CRM complejo
+No está conectada todavía a:
+- HubSpot
+- Pipedrive
+- Salesforce
+- CRM propietario
+- ERP
+
+---
+
+### 7. No agenda visitas automáticamente
+Puede sugerir visita, pero no reserva hora ni sincroniza agenda real.
+
+---
+
+### 8. No sirve todavía para múltiples negocios en una sola instancia compleja
+La V2 está pensada como solución por negocio o caso de uso concreto, no como plataforma multiempresa avanzada.
+
+---
+
+### 9. No sustituye criterio técnico humano
+La V2 no reemplaza la valoración técnica real del negocio cuando hace falta visita, diagnóstico o confirmación operativa.
+
+---
+
+## Qué sí puede venderse con seguridad
+Esta V2 sí puede venderse como:
+- asistente de primera atención comercial
+- filtro inicial de presupuestos
+- organizador de visitas y seguimientos
+- capa de respuesta segura para consultas frecuentes
+- apoyo operativo para negocio local con entrada manual o semimanual
+
+---
+
+## Qué podría entrar como ampliación futura
+
+### Posibles extras o V3
+- integración real con WhatsApp
+- envío automático de emails
+- conexión con calendario
+- política real de zonas
+- política real de desplazamiento
+- tablas de orientación económica por servicio
+- conexión con CRM
+- múltiples sedes
+- dashboards de seguimiento
+- reporting comercial
+
+---
+
+## Cómo explicarlo a cliente
+La V2 no pretende resolverlo todo sola.
+
+Pretende:
+- ordenar la entrada
+- pedir mejor lo necesario
+- responder antes
+- y dejar al negocio solo lo que realmente necesita validación
+
+---
+
+## Regla comercial importante
+No presentar como limitación lo que en realidad es prudencia.
+
+Ejemplo:
+No decir:
+“no sabe dar precio”
+
+Decir:
+“no inventa precios sin una base validada”
+
+---
+
+## Resultado esperado
+Una versión suficientemente útil para negocio real, pero todavía controlada y segura.
