@@ -1,0 +1,195 @@
+# Demo Narrative V2 — Local Service Quote & Visit Assistant
+
+## Objetivo
+Definir una narrativa comercial simple y varios ejemplos demo para enseñar el proyecto de forma clara, rápida y convincente.
+
+La idea no es explicar la arquitectura.
+La idea es explicar:
+- qué problema resuelve
+- qué hace
+- qué valor aporta
+- y por qué es útil para un negocio local
+
+---
+
+## Mensaje principal del proyecto
+Este sistema ayuda a negocios de servicios locales a gestionar mejor la primera atención cuando entran consultas de:
+- presupuesto
+- visita
+- plazo
+- zona
+- desplazamiento
+- seguimiento
+- soporte
+- urgencia
+
+No intenta automatizarlo todo.
+Intenta:
+- entender la consulta
+- detectar qué falta
+- proponer una respuesta segura
+- y dejar claro el siguiente paso
+
+---
+
+## Cómo contarlo en 30 segundos
+“He montado un sistema pensado para negocios de servicios locales que reciben consultas por presupuesto, visita, plazo o urgencia y todavía gestionan muchas de ellas de forma manual. El sistema entiende qué necesita el cliente, detecta qué falta para avanzar, propone una respuesta segura y decide si esa respuesta se puede enviar o si debe revisarse. Así el negocio responde antes, ordena mejor la entrada y evita errores en temas sensibles.”
+
+---
+
+## Cómo contarlo en 1 minuto
+“Este proyecto está pensado para negocios locales que reciben muchas consultas incompletas por formulario, email o WhatsApp. En vez de leer cada mensaje desde cero, el sistema detecta el tipo de servicio, la necesidad principal, los datos que faltan y propone una respuesta segura. Si el caso es simple, deja una respuesta utilizable. Si es sensible —por ejemplo precio, desplazamiento o urgencia— lo deja en revisión humana. Además, guarda todo en una hoja operativa clara para que el negocio sepa qué falta, qué prioridad tiene cada caso y cuál es el siguiente paso.”
+
+---
+
+## Cómo enseñar la demo en 2 minutos
+
+### Paso 1 — explicar el problema
+“Muchos negocios locales responden tarde o mal porque las consultas llegan mezcladas, incompletas o por varios canales.”
+
+### Paso 2 — enseñar qué entra
+Mostrar un ejemplo de mensaje real:
+- presupuesto
+- visita
+- plazo
+- urgencia
+
+### Paso 3 — enseñar qué hace el sistema
+Explicar que:
+- clasifica el servicio
+- entiende la necesidad
+- detecta datos faltantes
+- genera una respuesta sugerida
+- decide si se puede enviar o no
+- deja seguimiento
+
+### Paso 4 — enseñar la hoja operativa
+Mostrar columnas como:
+- tipo_servicio
+- tipo_necesidad
+- prioridad
+- qué falta
+- respuesta sugerida
+- se puede enviar
+- estado
+- fecha de seguimiento
+
+### Paso 5 — cerrar con el valor
+“Esto no sustituye a la persona. Le quita lectura repetitiva, ordena mejor la entrada y deja revisión humana donde realmente hace falta.”
+
+---
+
+## Ejemplos demo recomendados
+
+### Demo 1 — presupuesto
+#### Input
+“Quería presupuesto para instalar dos splits en casa.”
+
+#### Qué demuestra
+- detección de presupuesto
+- detección de climatización
+- petición de datos mínimos
+- no da precio final
+- deja respuesta utilizable
+
+#### Mensaje comercial
+“No inventa precios. Pide lo necesario para poder orientar mejor el caso.”
+
+---
+
+### Demo 2 — visita técnica
+#### Input
+“Quiero reformar un baño y me gustaría que vinierais a verlo.”
+
+#### Qué demuestra
+- detección de visita técnica
+- prioridad alta
+- requiere visita
+- requiere fotos
+- propone siguiente paso sin cerrar agenda
+
+#### Mensaje comercial
+“Ayuda a avanzar hacia la visita sin prometer una fecha que todavía no está validada.”
+
+---
+
+### Demo 3 — plazo
+#### Input
+“Si os paso hoy la información, cuánto tardaríais en venir?”
+
+#### Qué demuestra
+- detecta consulta de plazo
+- no promete fecha
+- pide tipo de trabajo
+- responde con prudencia
+
+#### Mensaje comercial
+“Responde rápido sin comprometer una disponibilidad que el negocio todavía no ha confirmado.”
+
+---
+
+### Demo 4 — urgencia
+#### Input
+“Tengo una fuga de agua y necesitaría que vinierais cuanto antes.”
+
+#### Qué demuestra
+- detecta urgencia
+- prioridad alta
+- no autoenvía
+- revisión humana
+- respuesta corta y segura
+
+#### Mensaje comercial
+“Sabe distinguir entre una oportunidad comercial y un caso que necesita atención inmediata.”
+
+---
+
+### Demo 5 — soporte postventa
+#### Input
+“Me instalasteis el aire hace dos meses y ahora no enfría bien.”
+
+#### Qué demuestra
+- distingue soporte de nueva oportunidad
+- score bajo
+- revisión humana
+- no mezcla postventa con venta nueva
+
+#### Mensaje comercial
+“No trata todo como lead. Entiende cuándo es soporte y lo ordena como tal.”
+
+---
+
+## Frases comerciales útiles
+
+### Frase 1
+“No sustituye a la persona; le quita la parte repetitiva y le deja solo lo que requiere criterio real.”
+
+### Frase 2
+“No intenta resolver demasiado. Intenta responder antes y mejor.”
+
+### Frase 3
+“No da precios inventados ni promete plazos sin validación.”
+
+### Frase 4
+“Convierte consultas desordenadas en casos claros, priorizados y listos para avanzar.”
+
+### Frase 5
+“Se puede implantar sobre un formulario o una entrada actual sin cambiar todo el sistema del negocio.”
+
+---
+
+## Objeción comercial más probable
+“¿Y para qué me sirve si luego revisa un humano?”
+
+### Respuesta
+“Porque el humano ya no empieza desde cero. Empieza con el caso entendido, priorizado, con lo que falta detectado y con una respuesta preparada si el caso lo permite.”
+
+---
+
+## Cierre comercial recomendado
+“Si os encaja, el siguiente paso natural sería probarlo como piloto pequeño con vuestro tipo de consultas reales y ver si os ahorra tiempo y ordena mejor la primera atención.”
+
+---
+
+## Resultado esperado
+Un guion claro para enseñar el proyecto sin caer en tecnicismos y enfocándolo en valor de negocio real.
