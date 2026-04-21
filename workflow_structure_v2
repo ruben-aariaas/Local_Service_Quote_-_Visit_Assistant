@@ -1,0 +1,168 @@
+# Workflow Structure V2 — Local Service Quote & Visit Assistant
+
+## Objetivo
+Definir la estructura final del workflow del Proyecto 3 para que quede claro, mantenible y enseñable.
+
+La idea no es solo que funcione.
+La idea es que también se entienda rápido.
+
+---
+
+## Estructura general recomendada
+
+### Rama 1 — Evaluación
+Manual Trigger
+→ dataset_test_v2
+→ Add Run Metadata Eval
+→ OpenAI Analysis Eval
+→ Parse OpenAI Eval
+→ Merge Original + AI Eval
+→ Business Corrections Eval
+→ Prepare for Sheets Eval
+→ Evaluate Output
+→ Save Technical Results Eval
+→ Prepare Client View Eval
+→ Save Client View Eval
+
+---
+
+### Rama 2 — Real
+Incoming Inquiry Webhook
+→ Normalize Incoming Inquiry
+→ Add Run Metadata Real
+→ OpenAI Analysis Real
+→ Parse OpenAI Real
+→ Merge Original + AI Real
+→ Business Corrections Real
+→ Prepare for Sheets Real
+→ Save Technical Results Real
+→ Prepare Client View Real
+→ Save Client View Real
+
+---
+
+## Filosofía de organización
+
+### 1. Separar evaluación y real
+No mezclar la rama de pruebas con la rama de producción.
+Cada una debe poder entenderse por separado.
+
+### 2. Separar entrada, motor y salida
+La estructura debe leerse así:
+- entrada
+- análisis
+- corrección
+- salida técnica
+- salida operativa
+
+### 3. Usar nombres descriptivos
+Cada nodo debe decir qué hace sin tener que abrirlo.
+
+---
+
+## Nombres recomendados de nodos
+
+### Evaluación
+- Manual Trigger
+- dataset_test_v2
+- Add Run Metadata Eval
+- OpenAI Analysis Eval
+- Parse OpenAI Eval
+- Merge Original + AI Eval
+- Business Corrections Eval
+- Prepare for Sheets Eval
+- Evaluate Output
+- Save Technical Results Eval
+- Prepare Client View Eval
+- Save Client View Eval
+
+### Real
+- Incoming Inquiry Webhook
+- Normalize Incoming Inquiry
+- Add Run Metadata Real
+- OpenAI Analysis Real
+- Parse OpenAI Real
+- Merge Original + AI Real
+- Business Corrections Real
+- Prepare for Sheets Real
+- Save Technical Results Real
+- Prepare Client View Real
+- Save Client View Real
+
+---
+
+## Organización visual recomendada
+
+### Columna 1 — Entrada
+- Manual Trigger
+- Incoming Inquiry Webhook
+
+### Columna 2 — Normalización / dataset
+- dataset_test_v2
+- Normalize Incoming Inquiry
+
+### Columna 3 — Metadatos
+- Add Run Metadata Eval
+- Add Run Metadata Real
+
+### Columna 4 — IA
+- OpenAI Analysis Eval
+- OpenAI Analysis Real
+
+### Columna 5 — Parse
+- Parse OpenAI Eval
+- Parse OpenAI Real
+
+### Columna 6 — Merge
+- Merge Original + AI Eval
+- Merge Original + AI Real
+
+### Columna 7 — Reglas de negocio
+- Business Corrections Eval
+- Business Corrections Real
+
+### Columna 8 — Salida técnica
+- Prepare for Sheets Eval
+- Evaluate Output
+- Save Technical Results Eval
+- Prepare for Sheets Real
+- Save Technical Results Real
+
+### Columna 9 — Salida operativa
+- Prepare Client View Eval
+- Save Client View Eval
+- Prepare Client View Real
+- Save Client View Real
+
+---
+
+## Qué debe evitarse
+
+### No usar nombres genéricos
+Evitar nombres como:
+- Code1
+- Merge2
+- OpenAI3
+- Sheets4
+
+### No cruzar líneas innecesarias
+Si una rama ya está clara, no crear conexiones raras que dificulten leer el flujo.
+
+### No mezclar salidas
+La hoja técnica y la operativa deben seguir separadas.
+
+---
+
+## Qué hace entendible el workflow
+Un buen workflow se entiende si alguien puede responder rápido a estas preguntas:
+- ¿por dónde entra?
+- ¿qué analiza?
+- ¿qué corrige?
+- ¿dónde guarda?
+- ¿qué ve el cliente?
+- ¿qué se usa para evaluar?
+
+---
+
+## Resultado esperado
+Un flujo que no solo funcione bien, sino que también pueda enseñarse como parte de una demo o un portfolio sin parecer caótico.
