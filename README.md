@@ -1,124 +1,248 @@
-# System Overview V2 — Local Service Quote & Visit Assistant
+# Local Service Quote & Visit Assistant
 
-## Nombre del proyecto
-Local Service Quote & Visit Assistant
+## Asistente de Presupuestos, Visitas y Seguimiento para Servicios Locales
 
-## Nombre interno en español
-Asistente de Presupuestos, Visitas y Seguimiento para Servicios Locales
+Proyecto de automatización orientado a negocios de servicios locales que reciben consultas por presupuesto, visita, plazo, zona, desplazamiento, seguimiento, soporte o urgencia y todavía gestionan gran parte de esa primera atención de forma manual.
 
----
-
-## Objetivo
-Diseñar un sistema de primera atención para negocios de servicios locales que trabajan con presupuestos, visitas y solicitudes de información.
-
-El sistema debe ayudar a:
-- entender qué necesita el cliente
-- detectar si la consulta es realmente comercial
-- identificar qué datos faltan para avanzar
-- decidir si hace falta visita o fotos
-- proponer el siguiente paso correcto
-- generar una respuesta segura
-- y dejar seguimiento claro
-
----
-
-## Tipo de negocio objetivo
-Negocios de instalaciones y pequeñas reformas, por ejemplo:
-- climatización
-- ventanas y cerramientos
-- reformas de baño
-- instalaciones a medida
-- servicios técnicos con visita previa
+La solución analiza cada consulta, detecta qué necesita el cliente, identifica qué falta para avanzar, propone una respuesta segura y decide si esa respuesta puede enviarse o requiere revisión humana.
 
 ---
 
 ## Problema de negocio
-Estos negocios suelen recibir consultas por WhatsApp, formularios, email o llamadas del tipo:
-- quiero presupuesto
-- ¿trabajáis en mi zona?
-- ¿cuánto tardáis?
-- ¿podéis venir a verlo?
-- ¿cobráis desplazamiento?
-- os escribí y sigo esperando respuesta
 
-El problema es que muchas consultas:
-- llegan incompletas
-- mezclan intención real con dudas generales
-- requieren leer mucho para entender qué quiere el cliente
-- y consumen tiempo antes de saber si merece la pena avanzar
+Muchos negocios locales reciben consultas como:
 
-Esto genera:
-- lentitud de respuesta
-- pérdida de oportunidades
-- seguimiento pobre
-- presupuestos mal filtrados
-- y carga manual repetitiva
+- “Quería presupuesto”
+- “¿Podéis venir a verlo?”
+- “¿Cuánto tardaríais?”
+- “¿Trabajáis en mi zona?”
+- “¿Cobráis desplazamiento?”
+- “Os escribí y sigo esperando”
+- “Tengo una incidencia urgente”
+
+Estas consultas suelen llegar incompletas, mezcladas y por distintos canales. Esto genera:
+
+- tiempo manual repetitivo
+- peor filtrado comercial
+- respuestas tardías
+- seguimientos pobres
+- y errores al responder temas sensibles como precio, plazo o disponibilidad
 
 ---
 
 ## Qué hace el sistema
+
 El sistema:
+
 - recibe una consulta
 - detecta el tipo de servicio
-- detecta el tipo de necesidad
+- detecta la necesidad principal
 - identifica datos faltantes
-- decide si hace falta visita
 - decide si hacen falta fotos
-- prioriza el caso
-- genera una respuesta segura
-- propone el siguiente paso
-- y deja registro operativo
+- decide si hace falta visita
+- genera una respuesta sugerida
+- decide si esa respuesta se puede enviar
+- y guarda el caso en una hoja operativa clara
 
 ---
 
 ## Qué NO hace esta V2
-La V2:
-- no da presupuestos cerrados automáticos
-- no promete plazos exactos
-- no confirma cobertura sin regla definida
-- no confirma coste de desplazamiento si el negocio no lo ha definido
-- no sustituye la validación técnica del negocio
-- no cierra trabajos automáticamente
+
+Esta versión no:
+
+- da presupuestos cerrados automáticos
+- promete plazos exactos
+- confirma cobertura real sin validación
+- calcula desplazamiento sin política definida
+- agenda visitas automáticamente
+- sustituye criterio técnico humano
+
+Su valor está en ordenar, pedir mejor, responder antes y dejar clara la siguiente acción.
+
+---
+
+## Casos que cubre
+
+### 1. Presupuesto
+Ejemplo:
+> “Quería presupuesto para instalar dos splits en casa.”
+
+Salida:
+- detecta climatización
+- detecta presupuesto
+- pide datos mínimos
+- no inventa precio
+- deja respuesta segura
+
+### 2. Visita técnica
+Ejemplo:
+> “Quiero reformar un baño y me gustaría que vinierais a verlo.”
+
+Salida:
+- detecta visita técnica
+- sube prioridad
+- pide fotos si hace falta
+- propone siguiente paso
+- no cierra agenda
+
+### 3. Plazo
+Ejemplo:
+> “Si os paso hoy la información, cuánto tardaríais en venir?”
+
+Salida:
+- detecta consulta de plazo
+- pide tipo de trabajo
+- responde con prudencia
+- no promete fecha exacta
+
+### 4. Cobertura o desplazamiento
+Ejemplo:
+> “¿Trabajáis por esta zona?” / “¿Cobráis desplazamiento?”
+
+Salida:
+- no inventa cobertura
+- no inventa coste
+- pide dato mínimo o deja revisión humana
+
+### 5. Seguimiento
+Ejemplo:
+> “Os escribí la semana pasada y quería saber si hay novedades.”
+
+Salida:
+- deja respuesta simple
+- marca seguimiento
+- asigna fecha de revisión
+
+### 6. Soporte o urgencia
+Ejemplo:
+> “No enfría bien.” / “Tengo una fuga de agua.”
+
+Salida:
+- distingue soporte de venta nueva
+- sube prioridad si toca
+- evita autoenvío si hay riesgo
+- deja revisión humana
+
+---
+
+## Cómo funciona
+
+### Modo evaluación
+Permite probar el sistema con un dataset de casos simulados para validar:
+
+- tipo de servicio
+- necesidad principal
+- datos faltantes
+- visita / fotos
+- seguridad de respuesta
+- y coherencia general
+
+### Modo real
+Permite recibir consultas por webhook, procesarlas con el mismo motor y guardarlas en:
+
+- una hoja técnica
+- una hoja operativa para negocio
+
+---
+
+## Arquitectura lógica
+
+1. entra una consulta
+2. se normaliza
+3. se analiza con IA
+4. se parsea la salida
+5. se aplican reglas de negocio
+6. se decide si puede enviarse o no
+7. se guarda en hojas técnica y operativa
+
+---
+
+## Salidas principales
+
+El sistema devuelve, entre otros, estos campos:
+
+- tipo_servicio
+- tipo_necesidad
+- prioridad
+- score_oportunidad
+- datos_faltantes
+- requiere_visita
+- requiere_fotos
+- respuesta_lista_para_enviar
+- auto_reply_allowed
+- estado
+- fecha_followup
+
+---
+
+## Hojas del sistema
+
+### Hoja técnica
+Pensada para validación, control y seguimiento interno de la automatización.
+
+### Hoja operativa
+Pensada para negocio. Resume de forma clara:
+
+- qué tipo de caso es
+- qué falta
+- si se puede enviar
+- qué respuesta propone
+- y cuál es el siguiente paso
 
 ---
 
 ## Posicionamiento correcto
-No venderlo como chatbot.
-No venderlo como generador automático de presupuestos.
 
-Venderlo como:
-“asistente de primera atención comercial para presupuestos, visitas y seguimiento”.
+Este proyecto no debe venderse como chatbot.
+Tampoco como generador automático de presupuestos.
+
+Debe venderse como:
+
+**asistente de primera atención comercial y operativa para presupuestos, visitas, seguimiento y consultas frecuentes.**
 
 ---
 
-## Valor que aporta
+## Valor para negocio
+
 - responde antes
 - pide mejor los datos
 - reduce ida y vuelta innecesaria
-- filtra mejor oportunidades reales
-- mejora el seguimiento
-- ordena la entrada comercial
-- y evita responder cosas sensibles sin control
+- mejora el filtrado comercial
+- evita errores en temas sensibles
+- organiza mejor la entrada
+- y deja revisión humana donde realmente hace falta
 
 ---
 
-## Regla principal de confianza
-El sistema solo automatiza lo seguro.
-Cuando una respuesta implica riesgo comercial o técnico, debe escalar a revisión humana.
+## Estado actual del proyecto
+
+V2 funcional con:
+
+- modo evaluación
+- modo real por webhook
+- análisis con IA
+- parser
+- reglas de negocio
+- hoja técnica
+- hoja operativa
 
 ---
 
-## Ejemplos de consultas que debe poder manejar
-- presupuesto
-- visita
-- plazo
-- cobertura de zona
-- coste de desplazamiento
-- seguimiento
-- soporte o postventa
-- información general
+## Posibles ampliaciones futuras
+
+- integración con WhatsApp
+- envío automático de email
+- conexión con calendario
+- política real de zonas
+- política real de desplazamiento
+- tablas orientativas por servicio
+- CRM
+- dashboards de seguimiento
 
 ---
 
-## Resultado esperado
-Una herramienta que convierta consultas desordenadas en casos claros, priorizados y listos para avanzar con criterio.
+## Mensaje final
+
+Este sistema no sustituye a la persona.
+
+Le quita la parte repetitiva de la primera atención, organiza mejor la entrada y evita que el negocio tenga que empezar cada consulta desde cero.
